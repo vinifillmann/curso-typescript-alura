@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "lite-server --baseDir=dist",
-    "start": "concurrently \"npm run watch\" \"npm run server\""
+    "start": "concurrently \"npm run watch\" \"npm run server\"",
+    "git-update": "git add .\ngit commit -m \"Avançando no Curso\"\ngit push origin master"
   },
   "author": "",
   "license": "ISC",
