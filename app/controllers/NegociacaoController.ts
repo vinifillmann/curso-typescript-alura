@@ -18,15 +18,18 @@ export class NegociacaoController {
         this.negocioesView.update(this.negociacoes)
     }
 
-    adiciona(): void {
+    public adiciona(): void {
         const negociacao = this.criarNegociacao()
-        this.negociacoes.adiciona(negociacao)
-        this.negocioesView.update(this.negociacoes)
-        this.limparFormulario()
-        this.mensagemView.update("Negociação adicionada com sucesso!")
+        if (!(negociacao.data.getDay() in {0:"domingo", 6:"sabado"})) {
+            this.negociacoes.adiciona(negociacao)
+            this.limparFormulario()
+            this.atualizaView()
+        } else {
+            this.mensagemView.update("Apenas negociações em dias úteis são aceitas")
+        }
     }
 
-    criarNegociacao(): Negociacao {
+    private criarNegociacao(): Negociacao {
         return new Negociacao(
             new Date(this.inputData.value.replaceAll("-", ",")),
             parseInt(this.inputQuantidade.value),
@@ -34,11 +37,16 @@ export class NegociacaoController {
         )
     }
 
-    limparFormulario(): void {
+    private limparFormulario(): void {
         this.inputData.value = ""
         this.inputQuantidade.value = ""
         this.inputValor.value = ""
         this.inputData.focus()
+    }
+
+    private atualizaView(): void {
+        this.negocioesView.update(this.negociacoes)
+        this.mensagemView.update("Negociação adicionada com sucesso!")
     }
 
 }

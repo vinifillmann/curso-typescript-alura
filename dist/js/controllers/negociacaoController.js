@@ -17,10 +17,14 @@ export class NegociacaoController {
     }
     adiciona() {
         const negociacao = this.criarNegociacao();
-        this.negociacoes.adiciona(negociacao);
-        this.negocioesView.update(this.negociacoes);
-        this.limparFormulario();
-        this.mensagemView.update("Negociação adicionada com sucesso!");
+        if (!(negociacao.data.getDay() in { 0: "domingo", 6: "sabado" })) {
+            this.negociacoes.adiciona(negociacao);
+            this.limparFormulario();
+            this.atualizaView();
+        }
+        else {
+            this.mensagemView.update("Apenas negociações em dias úteis são aceitas");
+        }
     }
     criarNegociacao() {
         return new Negociacao(new Date(this.inputData.value.replaceAll("-", ",")), parseInt(this.inputQuantidade.value), parseFloat(this.inputValor.value));
@@ -30,5 +34,9 @@ export class NegociacaoController {
         this.inputQuantidade.value = "";
         this.inputValor.value = "";
         this.inputData.focus();
+    }
+    atualizaView() {
+        this.negocioesView.update(this.negociacoes);
+        this.mensagemView.update("Negociação adicionada com sucesso!");
     }
 }

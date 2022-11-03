@@ -1,8 +1,12 @@
 import { View } from "./View.js";
 export class MensagemView extends View {
-    template(mensagem) {
+    template(mensagem, danger = false) {
+        let categoria = "info";
+        if (danger) {
+            categoria = "danger";
+        }
         return `
-        <p class="alert alert-info">${mensagem}</p>
+        <p class="alert alert-${categoria}">${mensagem}</p>
         `;
     }
 }

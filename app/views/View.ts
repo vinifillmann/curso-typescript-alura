@@ -6,9 +6,9 @@ export abstract class View<T> {
         this.element = document.querySelector(seletorCss)
     }
 
-    abstract template(dados: T): string
+    protected abstract template(dados: T): string
 
-    update(dados: T): void {
+    public update(dados: T): void {
         this.element.innerHTML = this.template(dados)
     }
 
