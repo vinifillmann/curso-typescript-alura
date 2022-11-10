@@ -13,4 +13,7 @@ export class Negociacao {
     get data() {
         return new Date(this._data.getTime());
     }
+    static criar(dataString, quantidadeString, valorString) {
+        return new Negociacao(new Date(dataString.replaceAll("-", ",")), parseInt(quantidadeString), parseFloat(valorString));
+    }
 }
