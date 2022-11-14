@@ -1,3 +1,6 @@
+import { inspect } from "../decorators/Inspect.js"
+import { logarTempoDeExecucao } from "../decorators/LogarTempoDeExecucao.js"
+
 export abstract class View<T> {
     
     private element: HTMLElement
@@ -15,6 +18,8 @@ export abstract class View<T> {
 
     protected abstract template(dados: T): string
 
+    @logarTempoDeExecucao()
+    @inspect()
     public update(dados: T): void {
         let template = this.template(dados)
         if (this.verificacao) {
@@ -22,5 +27,4 @@ export abstract class View<T> {
         }
         this.element.innerHTML = template
     }
-
 }
