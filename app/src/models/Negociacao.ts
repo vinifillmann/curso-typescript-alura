@@ -16,7 +16,7 @@ export class Negociacao {
 
     public static criar(dataString: string, quantidadeString: string, valorString: string): Negociacao {
         return new Negociacao(
-            new Date(dataString.replaceAll("-", ",")),
+            new Date(dataString.replace(/-/g, ",")),
             parseInt(quantidadeString),
             parseFloat(valorString)
         )
