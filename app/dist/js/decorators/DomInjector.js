@@ -12,3 +12,4 @@ export function domInjector(seletorCss) {
         });
     };
 }
+//# sourceMappingURL=DomInjector.js.map
