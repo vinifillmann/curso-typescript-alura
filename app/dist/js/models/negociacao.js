@@ -4,13 +4,20 @@ export class Negociacao {
         this.quantidade = quantidade;
         this.valor = valor;
     }
+    static criar(dataString, quantidadeString, valorString) {
+        return new Negociacao(new Date(dataString.replace(/-/g, ",")), parseInt(quantidadeString), parseFloat(valorString));
+    }
     get volume() {
         return Number(this.quantidade) * Number(this.valor);
     }
     get data() {
         return new Date(this._data.getTime());
     }
-    static criar(dataString, quantidadeString, valorString) {
-        return new Negociacao(new Date(dataString.replace(/-/g, ",")), parseInt(quantidadeString), parseFloat(valorString));
+    get text() {
+        return `
+            Data: ${this.data},
+            Quantidade: ${this.quantidade},
+            Valor: ${this.valor}
+        `;
     }
 }

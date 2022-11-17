@@ -17,7 +17,7 @@ export function domInjector(seletorCss: string) {
         Object.defineProperty(
             target,
             propertyKey,
-            { 
+            {
                 get: getter
             }
         )

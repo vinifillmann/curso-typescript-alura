@@ -5,11 +5,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { domInjector } from "../decorators/DomInjector.js";
-import { inspect } from "../decorators/Inspect.js";
 import { logarTempoDeExecucao } from "../decorators/LogarTempoDeExecucao.js";
 import { DiasDaSemana } from "../enums/DiasDaSemana.js";
 import { Negociacao } from "../models/Negociacao.js";
 import { Negociacoes } from "../models/Negociacoes.js";
+import { NegociacoesService } from "../services/NegociacoesService.js";
+import { imprimir } from "../utils/Imprimir.js";
 import { MensagemView } from "../views/MensagemView.js";
 import { NegociacoesView } from "../views/NegociacoesView.js";
 export class NegociacaoController {
@@ -17,20 +18,29 @@ export class NegociacaoController {
         this.negociacoes = new Negociacoes();
         this.negocioesView = new NegociacoesView("#NegociacoesView");
         this.mensagemView = new MensagemView("#MensagemView");
+        this.negociacoesService = new NegociacoesService();
         this.negocioesView.update(this.negociacoes);
     }
     adiciona() {
-        console.log(this.inputData);
-        console.log(this.inputQuantidade);
-        console.log(this.inputValor);
         const negociacao = Negociacao.criar(this.inputData.value, this.inputQuantidade.value, this.inputValor.value);
         if (!this.diaUtil(negociacao.data)) {
             this.mensagemView.update("Apenas negociações em dias úteis são aceitas");
             return;
         }
         this.negociacoes.adiciona(negociacao);
+        imprimir(negociacao, this.negociacoes);
         this.limparFormulario();
         this.atualizaView();
+    }
+    importaDados() {
+        this.negociacoesService
+            .obterNegociacoesDoDia()
+            .then(negociacoesDeHoje => {
+            for (let negociacao of negociacoesDeHoje) {
+                this.negociacoes.adiciona(negociacao);
+            }
+            this.negocioesView.update(this.negociacoes);
+        });
     }
     diaUtil(data) {
         return data.getDay() > DiasDaSemana.DOMINGO && data.getDay() < DiasDaSemana.SABADO;
@@ -56,6 +66,5 @@ __decorate([
     domInjector("#valor")
 ], NegociacaoController.prototype, "inputValor", void 0);
 __decorate([
-    inspect(),
     logarTempoDeExecucao()
 ], NegociacaoController.prototype, "adiciona", null);
